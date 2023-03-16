@@ -12,8 +12,9 @@ export default function Home() {
             id,
             name,
             phepToan: "+",
-            kieuPhuPhi: "tyLe",
-            typeText: false
+            kieuPhuPhi: "thanhTien",
+            valueOption: 1,
+            typeText: true
         }
         Data.push(tag)
         const newData = [...Data]
@@ -39,7 +40,7 @@ export default function Home() {
                 arrCurrent[index].phepToan = value
                 Data[index].phepToan = value
             }
-            if (value === 'tyLe') {
+            else if (value === 'tyLe') {
                 arrCurrent[index].typeText = false
                 Data[index].kieuPhuPhi = "tyLe"
                 Data[index].typeText = false
@@ -47,6 +48,11 @@ export default function Home() {
                 arrCurrent[index].typeText = true
                 Data[index].kieuPhuPhi = "thanhTien"
                 Data[index].typeText = true
+                arrCurrent[index].valueOption = 1
+                Data[index].valueOption = 1
+            } else {
+                arrCurrent[index].valueOption = value
+                Data[index].valueOption = value
             }
         }
         setArrTag(arrCurrent)
@@ -106,18 +112,19 @@ export default function Home() {
                                 width: 200,
                             } }
                             placeholder=""
-                            onChange={ handleChange }
+                            value={ tag.valueOption }
+                            onChange={ (value) => { handleChange(value, tag.id) } }
                             options={ [
                                 {
-                                    value: '1',
+                                    value: 1,
                                     label: 'option1',
                                 },
                                 {
-                                    value: '2',
+                                    value: 2,
                                     label: 'option2',
                                 },
                                 {
-                                    value: '3',
+                                    value: 3,
                                     label: 'option3',
                                 },
                             ] }

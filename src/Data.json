@@ -5,13 +5,16 @@
         "name" : "tag1",
         "phepToan" : "+",
         "kieuPhuPhi" : "tyLe",
+        "valueOption" : 1,
         "typeText" : false
+
     },
     {
         "id" : 2,
         "name" : "tag2",
         "phepToan" : "-",
         "kieuPhuPhi" : "thanhTien",
+        "valueOption" : 1,
         "typeText" : true
     }
 
