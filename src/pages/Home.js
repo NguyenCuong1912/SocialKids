@@ -1,44 +1,54 @@
 import React, { useState } from 'react'
 import { Select, Button, Input } from 'antd';
+import Data from '../Data.json'
 export default function Home() {
-
-
-    const [arrTag, setArrTag] = useState([])
-    // console.log(arrTag)
+    //typeText  true -> render Selection false -> text
+    const [arrTag, setArrTag] = useState(Data)
+    // add Tag
     const handleButton = (id, name) => {
         const tag = {
-            id, name, typeText: false
+            id,
+            name,
+            phepToan: "+",
+            kieuPhuPhi: "tyLe",
+            typeText: false
         }
         const arrTagNew = [...arrTag, tag]
         setArrTag(arrTagNew)
+        Data.push(tag)
     }
+    // Delete Tag
     const handleDel = (idTag) => {
         const arrCurrent = [...arrTag];
-        // console.log(arrCurrent)
         const index = arrTag.findIndex((element => element.id == idTag))
         if (index > -1) {
             arrCurrent.splice(index, 1)
         }
         setArrTag(arrCurrent)
-        // console.log("index", arrTag)
+        Data.splice(index, 1)
     }
+    // Change tag Select
     const handleChange = (value, idTag) => {
         const arrCurrent = [...arrTag];
         const index = arrTag.findIndex((element => element.id == idTag))
         if (index > -1) {
-            if (value) {
+            if (value === "+" || value === "-") {
+                arrCurrent[index].phepToan = value
+                Data[index].phepToan = value
+            }
+            if (value === 'tyLe') {
                 arrCurrent[index].typeText = false
-
-            } else {
+                Data[index].kieuPhuPhi = "tyLe"
+                Data[index].typeText = false
+            } else if (value === 'thanhTien') {
                 arrCurrent[index].typeText = true
-
+                Data[index].kieuPhuPhi = "thanhTien"
+                Data[index].typeText = true
             }
         }
-
         setArrTag(arrCurrent)
-
-        // console.log(value, id)
     };
+
     const renderTag = () => {
         return arrTag?.map((tag, index) => {
             return <div className='flex justify-center my-2' key={ index }>
@@ -47,30 +57,38 @@ export default function Home() {
                         style={ {
                             width: 200,
                         } }
+                        defaultValue={ tag.phepToan }
+                        onChange={ (value) => { handleChange(value, tag.id) } }
                         placeholder="Phép toán"
                         options={ [
                             {
-                                value: '1',
+                                value: '+',
                                 label: '+',
+                            },
+                            {
+                                value: '-',
+                                label: '-',
                             },
 
                         ] }
                     />
                 </div>
+
                 <div className='mr-5'>
                     <Select
                         style={ {
                             width: 200,
                         } }
+                        defaultValue={ tag.kieuPhuPhi }
                         placeholder="Kiểu tính phụ phí"
                         onChange={ (value) => { handleChange(value, tag.id) } }
                         options={ [
                             {
-                                value: false,
+                                value: "tyLe",
                                 label: 'Tỷ lệ',
                             },
                             {
-                                value: true,
+                                value: "thanhTien",
                                 label: 'Thành Tiền',
                             },
                         ] }
@@ -78,24 +96,30 @@ export default function Home() {
                 </div>
                 <div className='mr-5'>
                     { tag.typeText == true ?
+                        <Input placeholder="" />
+                        :
                         <Select
                             style={ {
                                 width: 200,
                             } }
-                            placeholder="Kiểu tính phụ phí"
+                            placeholder=""
                             onChange={ handleChange }
                             options={ [
                                 {
                                     value: '1',
-                                    label: 'Tỷ lệ',
+                                    label: 'option1',
                                 },
                                 {
                                     value: '2',
-                                    label: 'Thành Tiền',
+                                    label: 'option2',
+                                },
+                                {
+                                    value: '3',
+                                    label: 'option3',
                                 },
                             ] }
                         />
-                        : <Input placeholder="Kiểu phụ phí" />
+
                     }
 
                 </div>
@@ -149,6 +173,13 @@ export default function Home() {
             <div className='mt-6 border p-2'>
 
                 { renderTag() }
+            </div>
+            <div className='flex justify-center my-6'>
+                <Button className='bg-green-600 text-white'
+                    onClick={ () => {
+                        console.log(Data)
+                    } }
+                >Lưu danh sách</Button>
             </div>
         </div>
     )
